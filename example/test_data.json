@@ -1,0 +1,358 @@
+{
+	"GlobalMetainfo" : {
+		"__format" : "centralized"
+	},
+	"FieldsTable" : [
+		{
+			"__name" : "c_lin_e",
+			"__id" : 0,
+			"__elementtype" : "double",
+			"__bytesperelement" : 8,
+			"__rank" : 3,
+			"__isize" : 32,
+			"__jsize" : 2,
+			"__ksize" : 1734,
+			"__iminushalosize" : 0,
+			"__iplushalosize" : 0,
+			"__jminushalosize" : 0,
+			"__jplushalosize" : 0,
+			"__kminushalosize" : 0,
+			"__kplushalosize" : 0
+		},
+		{
+			"__name" : "ddt_u",
+			"__id" : 1,
+			"__elementtype" : "double",
+			"__bytesperelement" : 8,
+			"__rank" : 3,
+			"__isize" : 32,
+			"__jsize" : 64,
+			"__ksize" : 1156,
+			"__iminushalosize" : 0,
+			"__iplushalosize" : 0,
+			"__jminushalosize" : 0,
+			"__jplushalosize" : 0,
+			"__kminushalosize" : 0,
+			"__kplushalosize" : 0
+		},
+		{
+			"__name" : "ddt_v",
+			"__id" : 2,
+			"__elementtype" : "double",
+			"__bytesperelement" : 8,
+			"__rank" : 3,
+			"__isize" : 32,
+			"__jsize" : 64,
+			"__ksize" : 1156,
+			"__iminushalosize" : 0,
+			"__iplushalosize" : 0,
+			"__jminushalosize" : 0,
+			"__jplushalosize" : 0,
+			"__kminushalosize" : 0,
+			"__kplushalosize" : 0
+		},
+		{
+			"__name" : "dt",
+			"__id" : 3,
+			"__elementtype" : "double",
+			"__bytesperelement" : 8,
+			"__rank" : 0,
+			"__isize" : 1,
+			"__jsize" : 1,
+			"__ksize" : 1,
+			"__iminushalosize" : 0,
+			"__iplushalosize" : 0,
+			"__jminushalosize" : 0,
+			"__jplushalosize" : 0,
+			"__kminushalosize" : 0,
+			"__kplushalosize" : 0
+		},
+		{
+			"__name" : "inv_ddqz_z_full_e",
+			"__id" : 4,
+			"__elementtype" : "double",
+			"__bytesperelement" : 8,
+			"__rank" : 3,
+			"__isize" : 32,
+			"__jsize" : 64,
+			"__ksize" : 1734,
+			"__iminushalosize" : 0,
+			"__iplushalosize" : 0,
+			"__jminushalosize" : 0,
+			"__jplushalosize" : 0,
+			"__kminushalosize" : 0,
+			"__kplushalosize" : 0
+		},
+		{
+			"__name" : "inv_ddqz_z_half_e",
+			"__id" : 5,
+			"__elementtype" : "double",
+			"__bytesperelement" : 8,
+			"__rank" : 3,
+			"__isize" : 32,
+			"__jsize" : 65,
+			"__ksize" : 1734,
+			"__iminushalosize" : 0,
+			"__iplushalosize" : 0,
+			"__jminushalosize" : 0,
+			"__jplushalosize" : 0,
+			"__kminushalosize" : 0,
+			"__kplushalosize" : 0
+		},
+		{
+			"__name" : "rbf_vec_blk_c",
+			"__id" : 6,
+			"__elementtype" : "integer",
+			"__bytesperelement" : 4,
+			"__rank" : 3,
+			"__isize" : 9,
+			"__jsize" : 32,
+			"__ksize" : 1156,
+			"__iminushalosize" : 0,
+			"__iplushalosize" : 0,
+			"__jminushalosize" : 0,
+			"__jplushalosize" : 0,
+			"__kminushalosize" : 0,
+			"__kplushalosize" : 0
+		},
+		{
+			"__name" : "rbf_vec_coeff_c",
+			"__id" : 7,
+			"__elementtype" : "double",
+			"__bytesperelement" : 8,
+			"__rank" : 4,
+			"__isize" : 9,
+			"__jsize" : 2,
+			"__ksize" : 32,
+			"__lsize" : 1156,
+			"__iminushalosize" : 0,
+			"__iplushalosize" : 0,
+			"__jminushalosize" : 0,
+			"__jplushalosize" : 0,
+			"__kminushalosize" : 0,
+			"__kplushalosize" : 0,
+			"__lminushalosize" : 0,
+			"__lplushalosize" : 0
+		},
+		{
+			"__name" : "rbf_vec_idx_c",
+			"__id" : 8,
+			"__elementtype" : "integer",
+			"__bytesperelement" : 4,
+			"__rank" : 3,
+			"__isize" : 9,
+			"__jsize" : 32,
+			"__ksize" : 1156,
+			"__iminushalosize" : 0,
+			"__iplushalosize" : 0,
+			"__jminushalosize" : 0,
+			"__jplushalosize" : 0,
+			"__kminushalosize" : 0,
+			"__kplushalosize" : 0
+		},
+		{
+			"__name" : "rho",
+			"__id" : 9,
+			"__elementtype" : "double",
+			"__bytesperelement" : 8,
+			"__rank" : 3,
+			"__isize" : 32,
+			"__jsize" : 64,
+			"__ksize" : 1156,
+			"__iminushalosize" : 0,
+			"__iplushalosize" : 0,
+			"__jminushalosize" : 0,
+			"__jplushalosize" : 0,
+			"__kminushalosize" : 0,
+			"__kplushalosize" : 0
+		},
+		{
+			"__name" : "turb_diag_1dvar",
+			"__id" : 10,
+			"__elementtype" : "double",
+			"__bytesperelement" : 8,
+			"__rank" : 2,
+			"__isize" : 65,
+			"__jsize" : 40,
+			"__ksize" : 1,
+			"__iminushalosize" : 0,
+			"__iplushalosize" : 0,
+			"__jminushalosize" : 0,
+			"__jplushalosize" : 0,
+			"__kminushalosize" : 0,
+			"__kplushalosize" : 0
+		},
+		{
+			"__name" : "u",
+			"__id" : 11,
+			"__elementtype" : "double",
+			"__bytesperelement" : 8,
+			"__rank" : 3,
+			"__isize" : 32,
+			"__jsize" : 64,
+			"__ksize" : 1156,
+			"__iminushalosize" : 0,
+			"__iplushalosize" : 0,
+			"__jminushalosize" : 0,
+			"__jplushalosize" : 0,
+			"__kminushalosize" : 0,
+			"__kplushalosize" : 0
+		},
+		{
+			"__name" : "umfl_s",
+			"__id" : 12,
+			"__elementtype" : "double",
+			"__bytesperelement" : 8,
+			"__rank" : 2,
+			"__isize" : 32,
+			"__jsize" : 1156,
+			"__ksize" : 1,
+			"__iminushalosize" : 0,
+			"__iplushalosize" : 0,
+			"__jminushalosize" : 0,
+			"__jplushalosize" : 0,
+			"__kminushalosize" : 0,
+			"__kplushalosize" : 0
+		},
+		{
+			"__name" : "v",
+			"__id" : 13,
+			"__elementtype" : "double",
+			"__bytesperelement" : 8,
+			"__rank" : 3,
+			"__isize" : 32,
+			"__jsize" : 64,
+			"__ksize" : 1156,
+			"__iminushalosize" : 0,
+			"__iplushalosize" : 0,
+			"__jminushalosize" : 0,
+			"__jplushalosize" : 0,
+			"__kminushalosize" : 0,
+			"__kplushalosize" : 0
+		},
+		{
+			"__name" : "vmfl_s",
+			"__id" : 14,
+			"__elementtype" : "double",
+			"__bytesperelement" : 8,
+			"__rank" : 2,
+			"__isize" : 32,
+			"__jsize" : 1156,
+			"__ksize" : 1,
+			"__iminushalosize" : 0,
+			"__iplushalosize" : 0,
+			"__jminushalosize" : 0,
+			"__jplushalosize" : 0,
+			"__kminushalosize" : 0,
+			"__kplushalosize" : 0
+		},
+		{
+			"__name" : "vn",
+			"__id" : 15,
+			"__elementtype" : "double",
+			"__bytesperelement" : 8,
+			"__rank" : 3,
+			"__isize" : 32,
+			"__jsize" : 64,
+			"__ksize" : 1734,
+			"__iminushalosize" : 0,
+			"__iplushalosize" : 0,
+			"__jminushalosize" : 0,
+			"__jplushalosize" : 0,
+			"__kminushalosize" : 0,
+			"__kplushalosize" : 0
+		},
+		{
+			"__name" : "w",
+			"__id" : 16,
+			"__elementtype" : "double",
+			"__bytesperelement" : 8,
+			"__rank" : 3,
+			"__isize" : 32,
+			"__jsize" : 65,
+			"__ksize" : 1156,
+			"__iminushalosize" : 0,
+			"__iplushalosize" : 0,
+			"__jminushalosize" : 0,
+			"__jplushalosize" : 0,
+			"__kminushalosize" : 0,
+			"__kplushalosize" : 0
+		}
+	],
+	"OffsetTable" : [
+		{
+			"__name" : "diffuse_hori_velocity",
+			"__id" : 0,
+			"__offsets" : {
+				"c_lin_e" : [
+					0,
+					"2FB6442E1C1074A65DD292459A76F743662DD21DB8ADB298388376A313EDFC1"
+				],
+				"ddt_u" : [
+					0,
+					"6F12E1132EE789860E33D314642BE10F4988A13F5245C229E97EAFEA65252"
+				],
+				"ddt_v" : [
+					0,
+					"5CEA2BAE4F6A89874729BDEBBDD75A4ED565171A69397FDD2CF44692DCE99DE3"
+				],
+				"dt" : [
+					0,
+					"325E218A77902229C149A6A8C10369169F8884541A1D21ADEF7631A407A8E"
+				],
+				"inv_ddqz_z_full_e" : [
+					0,
+					"B57D79B1E8CE9C1CCA7D1D165EB6BB4DF1F47E3DC169DC95E45E2C9F13CCA1D"
+				],
+				"inv_ddqz_z_half_e" : [
+					0,
+					"FF2039D8AA5061BDD4BC28535976B2A4CE531B2C9BE71AA22A844A3D3B0"
+				],
+				"rbf_vec_blk_c" : [
+					0,
+					"A61091C8FC63BE47C7293276995B41FA144A46F65220F49C8FA08A7FC89053F9"
+				],
+				"rbf_vec_coeff_c" : [
+					0,
+					"6661592813B1E5E1289D912182FC39FEE26D7FCCD8899C2F6480F12EB0912C"
+				],
+				"rbf_vec_idx_c" : [
+					0,
+					"20D044EB9719C057AE4A599AF5957B8839895BC3453144FBCD934EA579E4977"
+				],
+				"rho" : [
+					0,
+					"AA5BDACF4334F6DCE53C796B4C1D2E5EDEE4B577A2CC45CFD9A6FC79609DD6A2"
+				],
+				"turb_diag_1dvar" : [
+					0,
+					"AE354F8E94134999D8C590B8ED1984B7227CFDD1713BA48D91E627C5A521EF"
+				],
+				"u" : [
+					0,
+					"1AAC63A031BCBEB66A47F0D93BB5CFABAA9F416A17AC246DCEB0F2EE6D71F012"
+				],
+				"umfl_s" : [
+					0,
+					"A14FD1D62FD2C381DC93BEB0B5BA2AB9FA3295B0A16214A82992F8464DA4B5"
+				],
+				"v" : [
+					0,
+					"D6D319AD282DF3A02614E8EBCE377279F2A8E2B6E630E66F6F57B05E9FF9CBEB"
+				],
+				"vmfl_s" : [
+					0,
+					"D36851FEF531E5F1983F1BA891F647AB2DE40DFF421054C448BEF4AC14C865"
+				],
+				"vn" : [
+					0,
+					"55F1E1727BC1B8F4A20F5953D4BFD39AE09373EE55DE4C41848F927743716"
+				],
+				"w" : [
+					0,
+					"698555D9B22D77792BDA60443B2F586A6C26624D22E83CA77BE377E748D84AC"
+				]
+			}
+		}
+	]
+}
