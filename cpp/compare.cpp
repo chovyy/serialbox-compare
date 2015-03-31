@@ -7,32 +7,7 @@
 
 #include <iostream>
 #include "Serializer.h"
-
-
-void readFile(const std::string directory, const std::string basename, std::string field, DataFieldInfo& info, double*& data)
-{
-	Serializer serializer;
-	serializer.Init(directory, basename, SerializerOpenModeRead);
-
-	Savepoint savepoint;
-    savepoint.Init("diffuse_hori_velocity");
-
-    info = serializer.FindField(field);
-
-    int iSize = info.iSize();
-    int jSize = info.jSize();
-    int kSize = info.kSize();
-    int lSize = info.lSize();
-    int fieldLength = info.bytesPerElement();
-
-    int lStride = fieldLength;
-    int kStride = lSize * lStride;
-    int jStride = kSize * kStride;
-    int iStride = jSize * jStride;
-
-    data = new double[iSize * jSize * kSize * lSize];
-    serializer.ReadField(field, savepoint, data, iStride, jStride, kStride, lStride);
-}
+#include "shared.h"
 
 bool compareInfo(const DataFieldInfo info1, const DataFieldInfo info2)
 {
@@ -78,7 +53,7 @@ bool compareData(const double* data1, const double* data2, int iSize, int jSize,
 					{
 						equal = false;
 						std::cout << "(" << i << ", " << j << ", " << k << ", " << l << ") : ";
-						std::cout << data1[index] << " != " << data2[index] << "\n";
+						std::cout << data1[index] << " != " << data2[index] << std::endl;
 					}
 				}
 			}
