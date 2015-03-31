@@ -55,11 +55,12 @@ int main(int argc, char* argv[])
 	const std::string directory = argv[1];
 	const std::string basename = argv[2];
 	const std::string field = argv[3];
+	const std::string savepoint = argv[4];
 
 	double* data;
 	DataFieldInfo info;
 
-	readFile(directory, basename, field, info, data);
+	readFile(directory, basename, field, savepoint, info, data);
 	dump(info, data);
 
 	return 0;

@@ -74,15 +74,16 @@ int main(int argc, char* argv[])
 	const std::string basename1 = argv[2];
 	const std::string directory2 = argv[3];
 	const std::string basename2 = argv[4];
-	const std::string field = argv[5];
+	const std::string savepoint = argv[5];
+	const std::string field = argv[6];
 
 	double* data1;
 	double* data2;
 	DataFieldInfo info1;
 	DataFieldInfo info2;
 
-	readFile(directory1, basename1, field, info1, data1);
-	readFile(directory2, basename2, field, info2, data2);
+	readFile(directory1, basename1, savepoint, field, info1, data1);
+	readFile(directory2, basename2, savepoint, field, info2, data2);
 	compare(info1, data1, info2, data2);
 
 	return 0;

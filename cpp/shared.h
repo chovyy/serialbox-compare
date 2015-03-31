@@ -1,13 +1,13 @@
 #ifndef NEW_SERIALIZER_COMPARE_SHARED
 #define NEW_SERIALIZER_COMPARE_SHARED
 
-void readFile(const std::string directory, const std::string basename, std::string field, DataFieldInfo& info, double*& data)
+void readFile(const std::string directory, const std::string basename, const std::string savepointName, std::string field, DataFieldInfo& info, double*& data)
 {
 	Serializer serializer;
 	serializer.Init(directory, basename, SerializerOpenModeRead);
 
 	Savepoint savepoint;
-    savepoint.Init("diffuse_hori_velocity");
+    savepoint.Init(savepointName);
 
     info = serializer.FindField(field);
 
