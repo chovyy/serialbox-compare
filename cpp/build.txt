@@ -1,0 +1,1 @@
+g++ -I/home/christian/lib/new_serialization/include/STELLA -o compare compare.cpp -L/home/christian/lib/new_serialization/lib -lSerializationFramework -ljson -lsha256
