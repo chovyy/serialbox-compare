@@ -49,7 +49,8 @@ bool compareData(const double* data1, const double* data2, int iSize, int jSize,
 				for (int l = 0; l < lSize; ++l)
 				{
 					int index = i*jSize*kSize*lSize + j*kSize*lSize + k*lSize + l;
-					if (data1[index] != data2[index])
+					if (data1[index] != data2[index] &&
+					    !(data1[index] != data1[index] && data2[index] != data2[index])) //NaN
 					{
 						equal = false;
 						std::cout << "(" << i << ", " << j << ", " << k << ", " << l << ") : ";
