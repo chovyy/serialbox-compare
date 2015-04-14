@@ -19,15 +19,28 @@ void dumpInfo(const DataFieldInfo info, Bounds iBounds, Bounds jBounds, Bounds k
 	kBounds.upper = std::min(kBounds.upper, info.kSize() - 1);
 	lBounds.upper = std::min(lBounds.upper, info.lSize() - 1);
 
+	std::cout << "Field: " << info.name() << std::endl;
+	std::cout << "Type: " << info.type() << std::endl;
+	std::cout << "Rank: " << info.rank() << std::endl;
+	std::cout << "Bytes per Element: " << info.bytesPerElement() << std::endl;
 	std::cout << "iSize: " << info.iSize() << " " << iBounds << std::endl;
 	std::cout << "jSize: " << info.jSize() << " " << jBounds << std::endl;
 	std::cout << "kSize: " << info.kSize() << " " << kBounds << std::endl;
 	std::cout << "lSize: " << info.lSize() << " " << lBounds << std::endl;
 }
 
-void dumpData(const double* data, int iSize, const Bounds iBounds, int jSize, const Bounds jBounds,
-								  int kSize, const Bounds kBounds, int lSize, const Bounds lBounds)
+template <typename T>
+void dumpData(const Serializer& serializer, const DataFieldInfo& info, const std::string savepointName,
+			 const Bounds iBounds, const Bounds jBounds, const Bounds kBounds, const Bounds lBounds)
 {
+	T* data;
+	readData(serializer, info, savepointName, data);
+
+	int iSize = info.iSize();
+	int jSize = info.jSize();
+	int kSize = info.kSize();
+	int lSize = info.lSize();
+
 	bool equal = true;
 
 	for (int i = std::max(0, iBounds.lower); i <= std::min(iSize - 1, iBounds.upper); ++i)
@@ -53,18 +66,35 @@ void dumpData(const double* data, int iSize, const Bounds iBounds, int jSize, co
 	}
 }
 
-void dump(const std::string directory, const std::string basename,
-	      const std::string field, const std::string savepoint,
-		  Bounds iBounds, Bounds jBounds, Bounds kBounds, Bounds lBounds)
+int dump(const std::string directory, const std::string basename,
+	      const std::string field, const std::string savepointName,
+		  Bounds iBounds, Bounds jBounds, Bounds kBounds, Bounds lBounds, bool infoOnly)
 {
-	double* data;
+	Serializer serializer;
 	DataFieldInfo info;
-
-	readFile(directory, basename, field, savepoint, info, data);
-
+	readInfo(directory, basename, field, serializer, info);
 	dumpInfo(info, iBounds, jBounds, kBounds, lBounds);
+
+	if (infoOnly)
+	{
+		return 0;
+	}
+
 	std::cout << std::endl;
-	dumpData(data, info.iSize(), iBounds, info.jSize(), jBounds, info.kSize(), kBounds, info.lSize(), lBounds);
+
+	if (info.type() == "integer")
+	{
+		dumpData<int>(serializer, info, savepointName, iBounds, jBounds, kBounds, lBounds);
+	}
+	else if (info.type() == "double")
+	{
+		dumpData<double>(serializer, info, savepointName, iBounds, jBounds, kBounds, lBounds);
+	}
+	else
+	{
+		std::cerr << "Unsupported type: " << info.type();
+		return 2;
+	}
 }
 
 int main (int argc, char **argv) {
@@ -73,7 +103,8 @@ int main (int argc, char **argv) {
     std::string j = ":";
     std::string k = ":";
     std::string l = ":";
-    while ( (opt = getopt(argc, argv, "i:j:k:l:")) != -1) {
+    bool infoOnly = false;
+    while ( (opt = getopt(argc, argv, "i:j:k:l:q")) != -1) {
         switch (opt)
         {
         case 'i':
@@ -88,21 +119,22 @@ int main (int argc, char **argv) {
         case 'l':
 			l = optarg;
             break;
+        case 'q':
+			infoOnly = true;
+            break;
         }
     }
 
     //TODO Nur die Datei als Parameter übergeben und directory, basename und field selbst herausfinden
     const std::string directory = argv[optind++];
 	const std::string basename = argv[optind++];
+	const std::string savepointName = argv[optind++];
 	const std::string field = argv[optind++];
-	const std::string savepoint = argv[optind++];
 
 	Bounds iBounds = string2bounds(i);
 	Bounds jBounds = string2bounds(j);
 	Bounds kBounds = string2bounds(k);
 	Bounds lBounds = string2bounds(l);
 
-	dump(directory, basename, field, savepoint, iBounds, jBounds, kBounds, lBounds);
-
-    exit (0);
+	return dump(directory, basename, field, savepointName, iBounds, jBounds, kBounds, lBounds, infoOnly);
 }

@@ -12,6 +12,21 @@
 bool compareInfo(const DataFieldInfo info1, const DataFieldInfo info2)
 {
 	bool equal = true;
+	if (info1.type() != info2.type())
+	{
+		equal = false;
+		std::cout << "Type: " << info1.type() << " != " << info2.type() << std::endl;
+	}
+	if (info1.rank() != info2.rank())
+	{
+		equal = false;
+		std::cout << "Rank: " << info1.rank() << " != " << info2.rank() << std::endl;
+	}
+	if (info1.bytesPerElement() != info2.bytesPerElement())
+	{
+		equal = false;
+		std::cout << "Bytes per Element: " << info1.bytesPerElement() << " != " << info2.bytesPerElement() << std::endl;
+	}
 	if (info1.iSize() != info2.iSize())
 	{
 		equal = false;
@@ -36,8 +51,20 @@ bool compareInfo(const DataFieldInfo info1, const DataFieldInfo info2)
 	return equal;
 }
 
-bool compareData(const double* data1, const double* data2, int iSize, int jSize, int kSize, int lSize)
+template <typename T>
+bool compareData(const Serializer& serializer1, const Serializer& serializer2, const DataFieldInfo& info, const std::string savepointName)
 {
+	int* data1;
+	readData(serializer1, info, savepointName, data1);
+
+	int* data2;
+	readData(serializer2, info, savepointName, data2);
+
+	int iSize = info.iSize();
+	int jSize = info.jSize();
+	int kSize = info.kSize();
+	int lSize = info.lSize();
+
 	bool equal = true;
 
 	for (int i = 0; i < iSize; ++i)
@@ -64,11 +91,6 @@ bool compareData(const double* data1, const double* data2, int iSize, int jSize,
 	return equal;
 }
 
-bool compare(const DataFieldInfo info1, const double* data1, const DataFieldInfo info2, const double* data2)
-{
-	return compareInfo(info1, info2) && compareData(data1, data2, info1.iSize(), info1.jSize(), info1.kSize(), info1.lSize());
-}
-
 int main(int argc, char* argv[])
 {
 	const std::string directory1 = argv[1];
@@ -78,14 +100,33 @@ int main(int argc, char* argv[])
 	const std::string savepoint = argv[5];
 	const std::string field = argv[6];
 
-	double* data1;
-	double* data2;
+	Serializer serializer1;
 	DataFieldInfo info1;
+	readInfo(directory1, basename1, field, serializer1, info1);
+
+	Serializer serializer2;
 	DataFieldInfo info2;
+	readInfo(directory2, basename2, field, serializer2, info2);
 
-	readFile(directory1, basename1, savepoint, field, info1, data1);
-	readFile(directory2, basename2, savepoint, field, info2, data2);
-	compare(info1, data1, info2, data2);
+	bool equal = compareInfo(info1, info2);
+	if (!equal)
+	{
+		return 1;
+	}
 
-	return 0;
+	if (info1.type() == "integer")
+	{
+		equal = compareData<int>(serializer1, serializer2, info1, savepoint);
+	}
+	else if (info1.type() == "double")
+	{
+		equal = compareData<double>(serializer1, serializer2, info1, savepoint);
+	}
+	else
+	{
+		std::cerr << "Unsupported type: " << info1.type();
+		return 2;
+	}
+
+	return (int) (!equal);
 }

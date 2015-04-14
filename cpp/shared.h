@@ -54,29 +54,32 @@ Bounds string2bounds(std::string boundString)
 	return bounds;
 }
 
-void readFile(const std::string directory, const std::string basename, const std::string savepointName, std::string field, DataFieldInfo& info, double*& data)
+void readInfo(const std::string directory, const std::string basename, const std::string field, Serializer& serializer, DataFieldInfo& info)
 {
-	Serializer serializer;
 	serializer.Init(directory, basename, SerializerOpenModeRead);
+	info = serializer.FindField(field);
+}
 
+template <typename T>
+void readData(const Serializer& serializer, const DataFieldInfo& info, const std::string savepointName, T*& data)
+{
 	Savepoint savepoint;
     savepoint.Init(savepointName);
-
-    info = serializer.FindField(field);
 
     int iSize = info.iSize();
     int jSize = info.jSize();
     int kSize = info.kSize();
     int lSize = info.lSize();
     int fieldLength = info.bytesPerElement();
+    std::string fieldName = info.name();
 
     int lStride = fieldLength;
     int kStride = lSize * lStride;
     int jStride = kSize * kStride;
     int iStride = jSize * jStride;
 
-    data = new double[iSize * jSize * kSize * lSize];
-    serializer.ReadField(field, savepoint, data, iStride, jStride, kStride, lStride);
+    data = new T[iSize * jSize * kSize * lSize];
+    serializer.ReadField(fieldName, savepoint, data, iStride, jStride, kStride, lStride);
 }
 
 #endif
