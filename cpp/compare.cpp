@@ -54,10 +54,10 @@ bool compareInfo(const DataFieldInfo info1, const DataFieldInfo info2)
 template <typename T>
 bool compareData(const Serializer& serializer1, const Serializer& serializer2, const DataFieldInfo& info, const std::string savepointName)
 {
-	int* data1;
+	T* data1;
 	readData(serializer1, info, savepointName, data1);
 
-	int* data2;
+	T* data2;
 	readData(serializer2, info, savepointName, data2);
 
 	int iSize = info.iSize();
@@ -124,7 +124,7 @@ int main(int argc, char* argv[])
 	}
 	else
 	{
-		std::cerr << "Unsupported type: " << info1.type();
+		std::cerr << "Unsupported type: " << info1.type() << std::endl;
 		return 2;
 	}
 
