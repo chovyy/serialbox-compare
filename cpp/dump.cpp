@@ -31,34 +31,40 @@ void dumpInfo(const DataFieldInfo info, Bounds iBounds, Bounds jBounds, Bounds k
 
 template <typename T>
 void dumpData(const Serializer& serializer, const DataFieldInfo& info, const std::string savepointName,
-			 const Bounds iBounds, const Bounds jBounds, const Bounds kBounds, const Bounds lBounds)
+			  const Bounds iBounds, const Bounds jBounds, const Bounds kBounds, const Bounds lBounds)
 {
 	T* data;
 	readData(serializer, info, savepointName, data);
 
 	int iSize = info.iSize();
+	int iLower = std::max(0, iBounds.lower);
+	int iUpper = std::min(iSize - 1, iBounds.upper);
 	int jSize = info.jSize();
+	int jLower = std::max(0, jBounds.lower)
+	int jUpper = std::min(jSize - 1, jBounds.upper);
 	int kSize = info.kSize();
+	int kLower = std::max(0, kBounds.lower)
+	int kUpper = std::min(kSize - 1, kBounds.upper);
 	int lSize = info.lSize();
+	int lLower = std::max(0, lBounds.lower)
+	int lUpper = std::min(lSize - 1, lBounds.upper);
 
-	bool equal = true;
-
-	for (int i = std::max(0, iBounds.lower); i <= std::min(iSize - 1, iBounds.upper); ++i)
+	for (int i = iLower; i <= iUpper; ++i)
 	{
-		for (int j = std::max(0, jBounds.lower); j <= std::min(jSize - 1, jBounds.upper); ++j)
+		for (int j = jLower; j <= jUpper; ++j)
 		{
 			if (kSize > 1) std::cout << "[ ";
-			for (int k = std::max(0, kBounds.lower); k <= std::min(kSize - 1, kBounds.upper); ++k)
+			for (int k = kLower; k <= kUpper; ++k)
 			{
 				if (lSize > 1) std::cout << "( ";
-				for (int l = std::max(0, lBounds.lower); l <= std::min(lSize - 1, lBounds.upper); ++l)
+				for (int l = lLower; l <= lUpper; ++l)
 				{
 					int index = i*jSize*kSize*lSize + j*kSize*lSize + k*lSize + l;
 					std::cout << data[index];
-					if (l < lSize - 1) std::cout << ", ";
+					if (l < lUpper) std::cout << ", ";
 				}
 				if (lSize > 1) std::cout << " )";
-				if (k < kSize - 1) std::cout << ", ";
+				if (k < kUpper) std::cout << ", ";
 			}
 			if (kSize > 1) std::cout << " ]";
 		}
@@ -125,16 +131,17 @@ int main (int argc, char **argv) {
         }
     }
 
+	Bounds iBounds = string2bounds(i);
+	Bounds jBounds = string2bounds(j);
+	Bounds kBounds = string2bounds(k);
+	Bounds lBounds = string2bounds(l);
+
     //TODO Nur die Datei als Parameter übergeben und directory, basename und field selbst herausfinden
     const std::string directory = argv[optind++];
 	const std::string basename = argv[optind++];
 	const std::string savepointName = argv[optind++];
 	const std::string field = argv[optind++];
 
-	Bounds iBounds = string2bounds(i);
-	Bounds jBounds = string2bounds(j);
-	Bounds kBounds = string2bounds(k);
-	Bounds lBounds = string2bounds(l);
-
-	return dump(directory, basename, field, savepointName, iBounds, jBounds, kBounds, lBounds, infoOnly);
+	return dump(directory, basename, field, savepointName,
+			    iBounds, jBounds, kBounds, lBounds, infoOnly);
 }
