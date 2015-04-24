@@ -1,0 +1,21 @@
+#! /bin/bash
+
+PROCESS=1
+DIRECTORY1="/home/christian/workspace/icon-test-lesturb/experiments/nh_cbl/"
+DIRECTORY2="/home/christian/workspace/icon-test-lesturb/experiments/icon-testbed_sgsturb_torus/"
+BASENAME="serializer_diffuse_hori_velocity_${1}_${PROCESS}"
+SAVEPOINT="$1"
+FIELD="$2"
+ARGUMENTS=${@:3}
+
+# echo "DIRECTORY1: $DIRECTORY1"
+# echo "DIRECTORY2: $DIRECTORY2"
+# echo "BASENAME: $BASENAME"
+# echo "SAVEPOINT: $SAVEPOINT"
+# echo "FIELD: $FIELD"
+
+./compare "$DIRECTORY1" "$BASENAME" "$DIRECTORY2" "$BASENAME" "$SAVEPOINT" "$FIELD" $ARGUMENTS
+
+exit 0
+
+

@@ -1,0 +1,18 @@
+#! /bin/bash
+
+DIRECTORY="/home/christian/workspace/icon-test-lesturb/experiments/${1}/"
+BASENAME="serializer_diffuse_hori_velocity_${2}_0"
+SAVEPOINT="$2"
+FIELD="$3"
+ARGUMENTS=${@:4}
+
+# echo "DIRECTORY: $DIRECTORY"
+# echo "BASENAME: $BASENAME"
+# echo "SAVEPOINT: $SAVEPOINT"
+# echo "FIELD: $FIELD"
+
+./dump "$DIRECTORY" "$BASENAME" "$SAVEPOINT" "$FIELD" $ARGUMENTS
+
+exit 0
+
+
