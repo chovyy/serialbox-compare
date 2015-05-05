@@ -11,7 +11,6 @@
 #include "Serializer.h"
 #include "shared.h"
 
-
 void dumpInfo(const DataFieldInfo info, Bounds iBounds, Bounds jBounds, Bounds kBounds, Bounds lBounds)
 {
 	iBounds.upper = std::min(iBounds.upper, info.iSize() - 1);
@@ -30,8 +29,8 @@ void dumpInfo(const DataFieldInfo info, Bounds iBounds, Bounds jBounds, Bounds k
 }
 
 template <typename T>
-void dumpData(const Serializer& serializer, const DataFieldInfo& info, const std::string savepointName,
-			  const Bounds iBounds, const Bounds jBounds, const Bounds kBounds, const Bounds lBounds)
+void dumpData(const Serializer& serializer, const DataFieldInfo& info, const std::string& savepointName,
+			  const Bounds& iBounds, const Bounds& jBounds, const Bounds& kBounds, const Bounds& lBounds)
 {
 	T* data;
 	readData(serializer, info, savepointName, data);
@@ -40,13 +39,13 @@ void dumpData(const Serializer& serializer, const DataFieldInfo& info, const std
 	int iLower = std::max(0, iBounds.lower);
 	int iUpper = std::min(iSize - 1, iBounds.upper);
 	int jSize = info.jSize();
-	int jLower = std::max(0, jBounds.lower)
+	int jLower = std::max(0, jBounds.lower);
 	int jUpper = std::min(jSize - 1, jBounds.upper);
 	int kSize = info.kSize();
-	int kLower = std::max(0, kBounds.lower)
+	int kLower = std::max(0, kBounds.lower);
 	int kUpper = std::min(kSize - 1, kBounds.upper);
 	int lSize = info.lSize();
-	int lLower = std::max(0, lBounds.lower)
+	int lLower = std::max(0, lBounds.lower);
 	int lUpper = std::min(lSize - 1, lBounds.upper);
 
 	for (int i = iLower; i <= iUpper; ++i)
@@ -72,13 +71,14 @@ void dumpData(const Serializer& serializer, const DataFieldInfo& info, const std
 	}
 }
 
-int dump(const std::string directory, const std::string basename,
-	      const std::string field, const std::string savepointName,
-		  Bounds iBounds, Bounds jBounds, Bounds kBounds, Bounds lBounds, bool infoOnly)
+int dump(const std::string& directory, const std::string& basename,
+	     const std::string& field, const std::string& savepointName,
+		 const Bounds& iBounds, const Bounds& jBounds, const Bounds& kBounds, const Bounds& lBounds, bool infoOnly)
 {
 	Serializer serializer;
 	DataFieldInfo info;
 	readInfo(directory, basename, field, serializer, info);
+
 	dumpInfo(info, iBounds, jBounds, kBounds, lBounds);
 
 	if (infoOnly)
@@ -137,10 +137,21 @@ int main (int argc, char **argv) {
 	Bounds lBounds = string2bounds(l);
 
     //TODO Nur die Datei als Parameter übergeben und directory, basename und field selbst herausfinden
-    const std::string directory = argv[optind++];
-	const std::string basename = argv[optind++];
-	const std::string savepointName = argv[optind++];
-	const std::string field = argv[optind++];
+	std::string filepath = argv[optind++];
+	std::string savepointName = argv[optind++];
+
+    std::string directory;
+	std::string basename;
+	std::string field;
+	if (!splitFilePath(filepath, directory, basename, field))
+	{
+		std::cerr << "Invalid file: " << filepath << std::endl;
+		return 2;
+	}
+
+	std::cout << "Directory: " << directory << std::endl;
+	std::cout << "Basename: " << basename << std::endl;
+	std::cout << "Savepoint: " << savepointName << std::endl;
 
 	return dump(directory, basename, field, savepointName,
 			    iBounds, jBounds, kBounds, lBounds, infoOnly);

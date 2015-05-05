@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <algorithm>
 #include <limits>
+#include <sys/stat.h>
 
 #ifndef NEW_SERIALIZER_COMPARE_SHARED
 #define NEW_SERIALIZER_COMPARE_SHARED
@@ -54,14 +55,76 @@ Bounds string2bounds(std::string boundString)
 	return bounds;
 }
 
-void readInfo(const std::string directory, const std::string basename, const std::string field, Serializer& serializer, DataFieldInfo& info)
+bool fileExists(const std::string& path)
+{
+	struct stat buffer;
+	return (stat(path.c_str(), &buffer) == 0);
+}
+
+bool splitFilePath(const std::string& path, std::string& directory, std::string& basename, std::string& field)
+{
+	if (!fileExists(path))
+	{
+		return false;
+	}
+
+	int size = path.length();
+	if (size < 7)
+	{
+		return false;
+	}
+
+	if (path.substr(size - 4, 4) != ".dat")
+	{
+		return false;
+	}
+
+	int last_ = path.find_last_of("_");
+	if (last_ == std::string::npos || last_ > size - 6)
+	{
+		return false;
+	}
+
+	std::string jsonPath;
+	do
+	{
+		jsonPath = path.substr(0, last_) + ".json";
+	}
+	while (!fileExists(jsonPath) && (last_ = path.find_last_of("_", last_ - 1)) != std::string::npos);
+
+	if (last_ == std::string::npos)
+	{
+		return false;
+	}
+
+	int lastSlash = path.find_last_of("/\\");
+	std::string file;
+
+	if (lastSlash == std::string::npos)
+	{
+		directory = ".";
+		file = path;
+	}
+	else
+	{
+		directory = path.substr(0, lastSlash);
+		file = path.substr(lastSlash + 1);
+	}
+
+	basename = path.substr(lastSlash + 1, (last_ - lastSlash) - 1);
+	field = path.substr(last_ + 1, size - last_ - 5);
+
+	return true;
+}
+
+void readInfo(const std::string& directory, const std::string& basename, const std::string& field, Serializer& serializer, DataFieldInfo& info)
 {
 	serializer.Init(directory, basename, SerializerOpenModeRead);
 	info = serializer.FindField(field);
 }
 
 template <typename T>
-void readData(const Serializer& serializer, const DataFieldInfo& info, const std::string savepointName, T*& data)
+void readData(const Serializer& serializer, const DataFieldInfo& info, const std::string& savepointName, T*& data)
 {
 	Savepoint savepoint;
     savepoint.Init(savepointName);
