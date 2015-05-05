@@ -12,7 +12,7 @@
 #include "Serializer.h"
 #include "shared.h"
 
-bool compareInfo(const DataFieldInfo info1, const DataFieldInfo info2)
+bool compareInfo(const DataFieldInfo& info1, const DataFieldInfo& info2)
 {
 	bool equal = true;
 	if (info1.type() != info2.type())
@@ -55,8 +55,8 @@ bool compareInfo(const DataFieldInfo info1, const DataFieldInfo info2)
 }
 
 template <typename T>
-bool compareData(const Serializer& serializer1, const Serializer& serializer2, const DataFieldInfo& info, const std::string savepointName,
-		         Bounds iBounds, Bounds jBounds, Bounds kBounds, Bounds lBounds, double tolerance)
+bool compareData(const Serializer& serializer1, const Serializer& serializer2, const DataFieldInfo& info, const std::string& savepointName,
+		         const Bounds& iBounds, const Bounds& jBounds, const Bounds& kBounds, const Bounds& lBounds, double tolerance)
 {
 	T* data1;
 	readData(serializer1, info, savepointName, data1);
@@ -104,10 +104,10 @@ bool compareData(const Serializer& serializer1, const Serializer& serializer2, c
 	return equal;
 }
 
-int compare(const std::string directory1, const std::string basename1,
-		    const std::string directory2, const std::string basename2,
-			const std::string savepointName, const std::string field,
-			Bounds iBounds, Bounds jBounds, Bounds kBounds, Bounds lBounds, double tolerance, bool infoOnly)
+int compare(const std::string& directory1, const std::string& basename1,
+		    const std::string& directory2, const std::string& basename2,
+			const std::string& savepointName, const std::string& field,
+			const Bounds& iBounds, const Bounds& jBounds, const Bounds& kBounds, const Bounds& lBounds, double tolerance, bool infoOnly)
 {
 	Serializer serializer1;
 	DataFieldInfo info1;
@@ -182,14 +182,34 @@ int main (int argc, char **argv) {
 	Bounds kBounds = string2bounds(k);
 	Bounds lBounds = string2bounds(l);
 
-    //TODO Nur die Dateien als Parameter übergeben und directory, basename und field selbst herausfinden
-	const std::string directory1 = argv[optind++];
-	const std::string basename1 = argv[optind++];
-	const std::string directory2 = argv[optind++];
-	const std::string basename2 = argv[optind++];
-	const std::string savepointName = argv[optind++];
-	const std::string field = argv[optind++];
+	std::string filepath1 = argv[optind++];
+	std::string filepath2 = argv[optind++];
+	std::string savepointName = argv[optind++];
 
-	return compare(directory1, basename1, directory2, basename2, savepointName, field,
+	std::string directory1;
+	std::string basename1;
+	std::string field1;
+	if (!splitFilePath(filepath1, directory1, basename1, field1))
+	{
+		std::cerr << "Invalid file 1: " << filepath1 << std::endl;
+		return 2;
+	}
+
+	std::string directory2;
+	std::string basename2;
+	std::string field2;
+	if (!splitFilePath(filepath2, directory2, basename2, field2))
+	{
+		std::cerr << "Invalid file 2: " << filepath2 << std::endl;
+		return 2;
+	}
+
+	if (field1 != field2)
+	{
+		std::cout << "Field: " << field1 << " != " << field2 << std::endl;
+		return 1;
+	}
+
+	return compare(directory1, basename1, directory2, basename2, savepointName, field1,
 				   iBounds, jBounds, kBounds, lBounds, tolerance, infoOnly);
 }

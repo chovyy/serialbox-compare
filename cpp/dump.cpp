@@ -11,7 +11,7 @@
 #include "Serializer.h"
 #include "shared.h"
 
-void dumpInfo(const DataFieldInfo info, Bounds iBounds, Bounds jBounds, Bounds kBounds, Bounds lBounds)
+void dumpInfo(const DataFieldInfo& info, Bounds iBounds, Bounds jBounds, Bounds kBounds, Bounds lBounds)
 {
 	iBounds.upper = std::min(iBounds.upper, info.iSize() - 1);
 	jBounds.upper = std::min(jBounds.upper, info.jSize() - 1);
@@ -136,7 +136,6 @@ int main (int argc, char **argv) {
 	Bounds kBounds = string2bounds(k);
 	Bounds lBounds = string2bounds(l);
 
-    //TODO Nur die Datei als Parameter übergeben und directory, basename und field selbst herausfinden
 	std::string filepath = argv[optind++];
 	std::string savepointName = argv[optind++];
 
