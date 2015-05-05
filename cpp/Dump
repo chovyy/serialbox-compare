@@ -1,17 +1,14 @@
 #! /bin/bash
 
-DIRECTORY="/home/christian/workspace/icon-test-lesturb/experiments/${1}/"
-BASENAME="serializer_diffuse_hori_velocity_${2}_0"
+PROCESS=1
+FILE="/home/christian/workspace/icon-test-lesturb/experiments/${1}/serializer_diffuse_hori_velocity_${2}_${PROCESS}_${3}.dat"
 SAVEPOINT="$2"
-FIELD="$3"
 ARGUMENTS=${@:4}
 
-# echo "DIRECTORY: $DIRECTORY"
-# echo "BASENAME: $BASENAME"
+# echo "FILE: $FILE"
 # echo "SAVEPOINT: $SAVEPOINT"
-# echo "FIELD: $FIELD"
 
-./dump "$DIRECTORY" "$BASENAME" "$SAVEPOINT" "$FIELD" $ARGUMENTS
+./dump "$FILE" "$SAVEPOINT" $ARGUMENTS
 
 exit 0
 

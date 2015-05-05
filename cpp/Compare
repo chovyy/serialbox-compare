@@ -1,20 +1,16 @@
 #! /bin/bash
 
 PROCESS=1
-DIRECTORY1="/home/christian/workspace/icon-test-lesturb/experiments/nh_cbl/"
-DIRECTORY2="/home/christian/workspace/icon-test-lesturb/experiments/icon-testbed_sgsturb_torus/"
-BASENAME="serializer_diffuse_hori_velocity_${1}_${PROCESS}"
+FILE1="/home/christian/workspace/icon-test-lesturb/experiments/nh_cbl/serializer_diffuse_hori_velocity_${1}_${PROCESS}_${2}.dat"
+FILE2="/home/christian/workspace/icon-test-lesturb/experiments/icon-testbed_sgsturb_torus/serializer_diffuse_hori_velocity_${1}_${PROCESS}_${2}.dat"
 SAVEPOINT="$1"
-FIELD="$2"
 ARGUMENTS=${@:3}
 
-# echo "DIRECTORY1: $DIRECTORY1"
-# echo "DIRECTORY2: $DIRECTORY2"
-# echo "BASENAME: $BASENAME"
+# echo "FILE1: $FILE1"
+# echo "FILE2: $FILE2"
 # echo "SAVEPOINT: $SAVEPOINT"
-# echo "FIELD: $FIELD"
 
-./compare "$DIRECTORY1" "$BASENAME" "$DIRECTORY2" "$BASENAME" "$SAVEPOINT" "$FIELD" $ARGUMENTS
+./compare "$FILE1" "$FILE2" "$SAVEPOINT" $ARGUMENTS
 
 exit 0
 
