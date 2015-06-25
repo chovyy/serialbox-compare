@@ -66,6 +66,7 @@ void dumpData(const Serializer& serializer, const DataFieldInfo& info, const std
 				if (k < kUpper) std::cout << ", ";
 			}
 			if (kSize > 1) std::cout << " ]";
+			if (j < jUpper) std::cout << ", ";
 		}
 		std::cout << std::endl;
 	}
