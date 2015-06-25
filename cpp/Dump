@@ -1,7 +1,7 @@
 #! /bin/bash
 
 PROCESS=1
-FILE="/home/christian/workspace/icon-test-lesturb/experiments/${1}/serializer_diffuse_hori_velocity_${2}_${PROCESS}_${3}.dat"
+FILE="/home/christian/workspace/icon-test-lesturb/experiments/${1}/serializer_clouds_twomoment_${2}_${PROCESS}_${3}.dat"
 SAVEPOINT="$2"
 ARGUMENTS=${@:4}
 
