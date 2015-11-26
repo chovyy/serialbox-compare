@@ -97,6 +97,10 @@ int dump(const std::string& directory, const std::string& basename,
 	{
 		dumpData<double>(serializer, info, savepointName, iBounds, jBounds, kBounds, lBounds);
 	}
+	else if (info.type() == "float")
+	{
+		dumpData<float>(serializer, info, savepointName, iBounds, jBounds, kBounds, lBounds);
+	}
 	else
 	{
 		std::cerr << "Unsupported type: " << info.type();

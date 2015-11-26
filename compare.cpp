@@ -137,6 +137,10 @@ int compare(const std::string& directory1, const std::string& basename1, const s
 	{
 		equal = compareData<double>(serializer1, serializer2, savepointName1, savepointName2, info1, iBounds, jBounds, kBounds, lBounds, tolerance);
 	}
+	else if (info1.type() == "float")
+	{
+		equal = compareData<float>(serializer1, serializer2, savepointName1, savepointName2, info1, iBounds, jBounds, kBounds, lBounds, tolerance);
+	}
 	else
 	{
 		std::cerr << "Unsupported type: " << info1.type() << std::endl;
