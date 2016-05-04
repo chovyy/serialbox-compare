@@ -1,10 +1,13 @@
+#ifndef NEW_SERIALIZER_COMPARE_SHARED
+#define NEW_SERIALIZER_COMPARE_SHARED
+
 #include <cstdlib>
 #include <algorithm>
 #include <limits>
 #include <sys/stat.h>
+#include "Serializer.h"
 
-#ifndef NEW_SERIALIZER_COMPARE_SHARED
-#define NEW_SERIALIZER_COMPARE_SHARED
+using namespace ser;
 
 struct Bounds {
 	int lower, upper;
@@ -61,7 +64,7 @@ bool fileExists(const std::string& path)
 	return (stat(path.c_str(), &buffer) == 0);
 }
 
-bool splitFilePath(const std::string& path, std::string& directory, std::string& basename, std::string& field)
+bool splitFilePathDat(const std::string& path, std::string& directory, std::string& basename, std::string& field)
 {
 	if (!fileExists(path))
 	{
@@ -113,6 +116,43 @@ bool splitFilePath(const std::string& path, std::string& directory, std::string&
 
 	basename = path.substr(lastSlash + 1, (last_ - lastSlash) - 1);
 	field = path.substr(last_ + 1, size - last_ - 5);
+
+	return true;
+}
+
+bool splitFilePathJson(const std::string& path, std::string& directory, std::string& basename)
+{
+	if (!fileExists(path))
+	{
+		return false;
+	}
+
+	int size = path.length();
+	if (size < 6)
+	{
+		return false;
+	}
+
+	if (path.substr(size - 5, 5) != ".json")
+	{
+		return false;
+	}
+
+	int lastSlash = path.find_last_of("/\\");
+	std::string file;
+
+	if (lastSlash == std::string::npos)
+	{
+		directory = ".";
+		file = path;
+	}
+	else
+	{
+		directory = path.substr(0, lastSlash);
+		file = path.substr(lastSlash + 1);
+	}
+
+	basename = path.substr(lastSlash + 1, (size - lastSlash) - 6);
 
 	return true;
 }

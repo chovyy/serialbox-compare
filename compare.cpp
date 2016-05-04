@@ -9,46 +9,45 @@
 #include <algorithm>   /* for max, min */
 #include <cmath>       /* for abs */
 #include <iostream>    /* for cout */
-#include "Serializer.h"
 #include "shared.h"
 
-bool compareInfo(const DataFieldInfo& info1, const DataFieldInfo& info2)
+bool compareInfo(const DataFieldInfo& info1, const DataFieldInfo& info2, std::ostream& out = std::cout)
 {
 	bool equal = true;
 	if (info1.type() != info2.type())
 	{
 		equal = false;
-		std::cout << "Type: " << info1.type() << " != " << info2.type() << std::endl;
+		out << "Type: " << info1.type() << " != " << info2.type() << std::endl;
 	}
 	if (info1.rank() != info2.rank())
 	{
 		equal = false;
-		std::cout << "Rank: " << info1.rank() << " != " << info2.rank() << std::endl;
+		out << "Rank: " << info1.rank() << " != " << info2.rank() << std::endl;
 	}
 	if (info1.bytesPerElement() != info2.bytesPerElement())
 	{
 		equal = false;
-		std::cout << "Bytes per Element: " << info1.bytesPerElement() << " != " << info2.bytesPerElement() << std::endl;
+		out << "Bytes per Element: " << info1.bytesPerElement() << " != " << info2.bytesPerElement() << std::endl;
 	}
 	if (info1.iSize() != info2.iSize())
 	{
 		equal = false;
-		std::cout << "iSize: " << info1.iSize() << " != " << info2.iSize() << std::endl;
+		out << "iSize: " << info1.iSize() << " != " << info2.iSize() << std::endl;
 	}
 	if (info1.jSize() != info2.jSize())
 	{
 		equal = false;
-		std::cout << "jSize: " << info1.jSize() << " != " << info2.jSize() << std::endl;
+		out << "jSize: " << info1.jSize() << " != " << info2.jSize() << std::endl;
 	}
 	if (info1.kSize() != info2.kSize())
 	{
 		equal = false;
-		std::cout << "kSize: " << info1.kSize() << " != " << info2.kSize() << std::endl;
+		out << "kSize: " << info1.kSize() << " != " << info2.kSize() << std::endl;
 	}
 	if (info1.lSize() != info2.lSize())
 	{
 		equal = false;
-		std::cout << "lSize: " << info1.lSize() << " != " << info2.lSize() << std::endl;
+		out << "lSize: " << info1.lSize() << " != " << info2.lSize() << std::endl;
 	}
 
 	return equal;
@@ -58,7 +57,8 @@ template <typename T>
 bool compareData(const Serializer& serializer1, const Serializer& serializer2,
 				 const std::string& savepointName1, const std::string& savepointName2,
 				 const DataFieldInfo& info,
-		         const Bounds& iBounds, const Bounds& jBounds, const Bounds& kBounds, const Bounds& lBounds, double tolerance)
+		         const Bounds& iBounds, const Bounds& jBounds, const Bounds& kBounds, const Bounds& lBounds, double tolerance,
+				 std::ostream& out = std::cout)
 {
 	T* data1;
 	readData(serializer1, info, savepointName1, data1);
@@ -95,8 +95,8 @@ bool compareData(const Serializer& serializer1, const Serializer& serializer2,
 						std::abs(data1[index] - data2[index]) > tolerance)
 					{
 						equal = false;
-						std::cout << "(" << i << ", " << j << ", " << k << ", " << l << ") : ";
-						std::cout << data1[index] << " != " << data2[index] << std::endl;
+						out << "(" << i << ", " << j << ", " << k << ", " << l << ") : ";
+						out << data1[index] << " != " << data2[index] << std::endl;
 					}
 				}
 			}
@@ -109,7 +109,8 @@ bool compareData(const Serializer& serializer1, const Serializer& serializer2,
 int compare(const std::string& directory1, const std::string& basename1, const std::string& savepointName1,
 		    const std::string& directory2, const std::string& basename2, const std::string& savepointName2,
 			const std::string& field,
-			const Bounds& iBounds, const Bounds& jBounds, const Bounds& kBounds, const Bounds& lBounds, double tolerance, bool infoOnly)
+			const Bounds& iBounds, const Bounds& jBounds, const Bounds& kBounds, const Bounds& lBounds, double tolerance, bool infoOnly,
+			std::ostream& out = std::cout)
 {
 	Serializer serializer1;
 	DataFieldInfo info1;
@@ -119,7 +120,7 @@ int compare(const std::string& directory1, const std::string& basename1, const s
 	DataFieldInfo info2;
 	readInfo(directory2, basename2, field, serializer2, info2);
 
-	bool equal = compareInfo(info1, info2);
+	bool equal = compareInfo(info1, info2, out);
 	if (!equal)
 	{
 		return 1;
@@ -131,15 +132,15 @@ int compare(const std::string& directory1, const std::string& basename1, const s
 
 	if (info1.type() == "integer")
 	{
-		equal = compareData<int>(serializer1, serializer2, savepointName1, savepointName2, info1, iBounds, jBounds, kBounds, lBounds, tolerance);
+		equal = compareData<int>(serializer1, serializer2, savepointName1, savepointName2, info1, iBounds, jBounds, kBounds, lBounds, tolerance, out);
 	}
 	else if (info1.type() == "double")
 	{
-		equal = compareData<double>(serializer1, serializer2, savepointName1, savepointName2, info1, iBounds, jBounds, kBounds, lBounds, tolerance);
+		equal = compareData<double>(serializer1, serializer2, savepointName1, savepointName2, info1, iBounds, jBounds, kBounds, lBounds, tolerance, out);
 	}
 	else if (info1.type() == "float")
 	{
-		equal = compareData<float>(serializer1, serializer2, savepointName1, savepointName2, info1, iBounds, jBounds, kBounds, lBounds, tolerance);
+		equal = compareData<float>(serializer1, serializer2, savepointName1, savepointName2, info1, iBounds, jBounds, kBounds, lBounds, tolerance, out);
 	}
 	else
 	{
@@ -148,6 +149,38 @@ int compare(const std::string& directory1, const std::string& basename1, const s
 	}
 
 	return (int) (!equal);
+}
+
+int compareAll(const std::string& directory1, const std::string& basename1, const std::string& savepointName1,
+		       const std::string& directory2, const std::string& basename2, const std::string& savepointName2,
+			   double tolerance, bool infoOnly)
+{
+	Bounds iBounds = string2bounds(":");
+	Bounds jBounds = string2bounds(":");
+	Bounds kBounds = string2bounds(":");
+	Bounds lBounds = string2bounds(":");
+
+	Serializer serializer1;
+	serializer1.Init(directory1, basename1, SerializerOpenModeRead);
+
+	Savepoint savepoint;
+	savepoint.Init(savepointName1);
+
+	int total = 0;
+	for (std::string field1 : serializer1.FieldsAtSavepoint(savepoint))
+	{
+		std::ostringstream buffer;
+		int result = compare(directory1, basename1, savepointName1, directory2, basename2, savepointName2, field1,
+				   	   	     iBounds, jBounds, kBounds, lBounds, tolerance, infoOnly, buffer);
+		if (result > 0)
+		{
+			std::cout << "*** Field: " << field1 << " ***" << std::endl << buffer.str();
+		}
+
+		total = std::max(total, result);
+	}
+
+	return total;
 }
 
 int main (int argc, char **argv)
@@ -203,28 +236,42 @@ int main (int argc, char **argv)
 
 	std::string directory1;
 	std::string basename1;
-	std::string field1;
-	if (!splitFilePath(filepath1, directory1, basename1, field1))
+	std::string field1 = "";
+	bool json = false;
+	if (!splitFilePathDat(filepath1, directory1, basename1, field1))
 	{
-		std::cerr << "Invalid file 1: " << filepath1 << std::endl;
-		return 2;
+		json = true;
+		if (!splitFilePathJson(filepath1, directory1, basename1))
+		{
+			std::cerr << "Invalid file 1: " << filepath1 << std::endl;
+			return 2;
+		}
 	}
 
 	std::string directory2;
 	std::string basename2;
-	std::string field2;
-	if (!splitFilePath(filepath2, directory2, basename2, field2))
+	std::string field2 = "";
+	if (   !json && !splitFilePathDat(filepath2, directory2, basename2, field2)
+         || json && !splitFilePathJson(filepath2, directory2, basename2))
 	{
 		std::cerr << "Invalid file 2: " << filepath2 << std::endl;
 		return 2;
 	}
 
-	if (field1 != field2)
+	if (!json && field1 != field2)
 	{
 		std::cout << "Field: " << field1 << " != " << field2 << std::endl;
 		return 1;
 	}
 
-	return compare(directory1, basename1, savepointName1, directory2, basename2, savepointName2, field1,
-				   iBounds, jBounds, kBounds, lBounds, tolerance, infoOnly);
+	if (json)
+	{
+		return compareAll(directory1, basename1, savepointName1, directory2, basename2, savepointName2,
+				          tolerance, infoOnly);
+	}
+	else
+	{
+		return compare(directory1, basename1, savepointName1, directory2, basename2, savepointName2, field1,
+					   iBounds, jBounds, kBounds, lBounds, tolerance, infoOnly);
+	}
 }

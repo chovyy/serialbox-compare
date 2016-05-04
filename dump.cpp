@@ -147,7 +147,7 @@ int main (int argc, char **argv) {
     std::string directory;
 	std::string basename;
 	std::string field;
-	if (!splitFilePath(filepath, directory, basename, field))
+	if (!splitFilePathDat(filepath, directory, basename, field))
 	{
 		std::cerr << "Invalid file: " << filepath << std::endl;
 		return 2;
