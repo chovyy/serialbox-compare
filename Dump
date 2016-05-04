@@ -1,8 +1,8 @@
 #! /bin/bash
 
 FILE="/home/christian/workspace/icon-test-lesturb/experiments/${1}/serializer_clouds_twomoment_${2}_${3}_${4}.dat"
-SAVEPOINT="$2"
-ARGUMENTS=${@:5}
+SAVEPOINT="$5"
+ARGUMENTS=${@:6}
 
 # echo "FILE: $FILE"
 # echo "SAVEPOINT: $SAVEPOINT"
