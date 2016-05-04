@@ -89,7 +89,7 @@ int dump(const std::string& directory, const std::string& basename,
 
 	std::cout << std::endl;
 
-	if (info.type() == "integer")
+	if (info.type() == "int")
 	{
 		dumpData<int>(serializer, info, savepointName, iBounds, jBounds, kBounds, lBounds);
 	}
