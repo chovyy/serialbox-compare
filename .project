@@ -3,7 +3,7 @@
 	<name>NewSerializerCompare</name>
 	<comment></comment>
 	<projects>
-		<project>new_serialization</project>
+		<project>serialbox</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
