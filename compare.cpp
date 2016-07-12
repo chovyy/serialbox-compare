@@ -153,7 +153,7 @@ int compare(const std::string& directory1, const std::string& basename1, const s
 
 int compareAll(const std::string& directory1, const std::string& basename1, const std::string& savepointName1,
 		       const std::string& directory2, const std::string& basename2, const std::string& savepointName2,
-			   double tolerance, bool infoOnly)
+			   double tolerance, bool infoOnly, bool quiet)
 {
 	Bounds iBounds = string2bounds(":");
 	Bounds jBounds = string2bounds(":");
@@ -174,7 +174,11 @@ int compareAll(const std::string& directory1, const std::string& basename1, cons
 				   	   	     iBounds, jBounds, kBounds, lBounds, tolerance, infoOnly, buffer);
 		if (result > 0)
 		{
-			std::cout << "*** Field: " << field1 << " ***" << std::endl << buffer.str();
+			std::cout << "*** Field: " << field1 << " ***" << std::endl;
+			if (! quiet)
+			{
+				std::cout << buffer.str();
+			}
 		}
 
 		total = std::max(total, result);
@@ -193,6 +197,7 @@ int main (int argc, char **argv)
     double tolerance = 0.0;
     std::string savepointName2 = "";
     bool infoOnly = false;
+    bool quiet = false;
     while ( (opt = getopt(argc, argv, "i:j:k:l:t:s:q")) != -1) {
         switch (opt)
         {
@@ -211,8 +216,11 @@ int main (int argc, char **argv)
         case 't':
         	tolerance = strtod(optarg, NULL);
             break;
-        case 'q':
+        case 'o':
 			infoOnly = true;
+            break;
+        case 'q':
+        	quiet = true;
             break;
         case 's':
 			savepointName2 = optarg;
@@ -267,7 +275,7 @@ int main (int argc, char **argv)
 	if (json)
 	{
 		return compareAll(directory1, basename1, savepointName1, directory2, basename2, savepointName2,
-				          tolerance, infoOnly);
+				          tolerance, infoOnly, quiet);
 	}
 	else
 	{
