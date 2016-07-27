@@ -163,25 +163,36 @@ int compareAll(const std::string& directory1, const std::string& basename1, cons
 	Serializer serializer1;
 	serializer1.Init(directory1, basename1, SerializerOpenModeRead);
 
+	Serializer serializer2;
+	serializer2.Init(directory2, basename2, SerializerOpenModeRead);
+
 	Savepoint savepoint;
 	savepoint.Init(savepointName1);
 
 	int total = 0;
 	for (std::string field1 : serializer1.FieldsAtSavepoint(savepoint))
 	{
-		std::ostringstream buffer;
-		int result = compare(directory1, basename1, savepointName1, directory2, basename2, savepointName2, field1,
-				   	   	     iBounds, jBounds, kBounds, lBounds, tolerance, infoOnly, buffer);
-		if (result > 0)
+		if (!serializer2.HasField(field1))
 		{
-			std::cout << "*** Field: " << field1 << " ***" << std::endl;
-			if (! quiet)
+			std::cout << "*** Field " << field1 << " is missing in serializer2" << std::endl;
+		}
+		else
+		{
+			std::ostringstream buffer;
+			int result = compare(directory1, basename1, savepointName1, directory2, basename2, savepointName2, field1,
+								 iBounds, jBounds, kBounds, lBounds, tolerance, infoOnly, buffer);
+			if (result > 0)
 			{
-				std::cout << buffer.str();
+				std::cout << "*** Field: " << field1 << " ***" << std::endl;
+				if (! quiet)
+				{
+					std::cout << buffer.str();
+				}
 			}
+
+			total = std::max(total, result);
 		}
 
-		total = std::max(total, result);
 	}
 
 	return total;
