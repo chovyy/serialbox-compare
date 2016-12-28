@@ -209,7 +209,7 @@ int main (int argc, char **argv)
     std::string savepointName2 = "";
     bool infoOnly = false;
     bool quiet = false;
-    while ( (opt = getopt(argc, argv, "i:j:k:l:t:s:q")) != -1) {
+    while ( (opt = getopt(argc, argv, "i:j:k:l:t:s:oq")) != -1) {
         switch (opt)
         {
         case 'i':
