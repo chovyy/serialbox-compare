@@ -141,6 +141,15 @@ int main (int argc, char **argv) {
 	Bounds kBounds = string2bounds(k);
 	Bounds lBounds = string2bounds(l);
 
+	if (argc - optind < 2)
+	{
+		std::cerr <<
+				"Usage:\n" <<
+				argv[0] << " [-i interval] [-j interval] [-k interval] [-l interval] [-q]" <<
+						   " FILE SAVEPOINT\n";
+		return 3;
+	}
+
 	std::string filepath = argv[optind++];
 	std::string savepointName = argv[optind++];
 
