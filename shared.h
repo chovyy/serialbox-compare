@@ -157,6 +157,17 @@ bool splitFilePathJson(const std::string& path, std::string& directory, std::str
 	return true;
 }
 
+std::vector<std::string> savepointNames(const Serializer& serializer)
+{
+	std::vector<Savepoint> savepoints = serializer.savepoints();
+	std::vector<std::string> names;
+	for(std::vector<Savepoint>::iterator it = savepoints.begin(); it != savepoints.end(); ++it) {
+	    names.push_back(it->name());
+	}
+
+	return names;
+}
+
 void readInfo(const std::string& directory, const std::string& basename, const std::string& field, Serializer& serializer, DataFieldInfo& info)
 {
 	serializer.Init(directory, basename, SerializerOpenModeRead);
