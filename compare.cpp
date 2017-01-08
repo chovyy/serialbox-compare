@@ -11,6 +11,112 @@
 #include <iostream>    /* for cout */
 #include "shared.h"
 
+
+bool checkSavepoints(const Serializer& serializer1, const Serializer& serializer2, std::string& savepointName1, std::string& savepointName2)
+{
+	std::vector<std::string> savepointNames1 = savepointNames(serializer1);
+	if (savepointNames1.size() == 0)
+	{
+		std::cerr << "Serializer 1 contains no Savepoints." << std::endl;
+		return false;
+	}
+
+	std::vector<std::string> savepointNames2 = savepointNames(serializer2);
+	if (savepointNames2.size() == 0)
+	{
+		std::cerr << "Serializer 2 contains no Savepoints." << std::endl;
+		return false;
+	}
+
+	bool print = false;
+
+	if (savepointName1 == "")
+	{
+		print = true;
+
+		if (savepointNames1.size() == 1)
+		{
+			savepointName1 = savepointNames1.front();
+		}
+		else
+		{
+			std::vector<std::string> commonNames(std::min(savepointNames1.size(), savepointNames2.size()));
+			std::vector<std::string>::iterator it;
+
+			std::sort(savepointNames1.begin(), savepointNames1.end());
+			std::sort(savepointNames2.begin(), savepointNames2.end());
+
+			it = std::set_intersection(savepointNames1.begin(), savepointNames1.end(), savepointNames2.begin(), savepointNames2.end(), commonNames.begin());
+			commonNames.resize(it - commonNames.begin());
+
+			if (commonNames.size() == 1)
+			{
+				savepointName1 = commonNames.front();
+				savepointName2 = commonNames.front();
+			}
+			else if (commonNames.empty())
+			{
+				std::cerr << "No common Savepoints in Serializer 1 and 2." << std::endl;
+				return false;
+			}
+			else
+			{
+				std::cerr << "Cannot decide on Savepoint; candidates: ";
+				std::string separator = "";
+				for(std::vector<std::string>::iterator it = commonNames.begin(); it != commonNames.end(); ++it) {
+					std::cerr << separator << *it;
+					separator = ", ";
+				}
+				std::cerr << std::endl;
+				return false;
+			}
+		}
+	}
+	else
+	{
+		if (std::find(savepointNames1.begin(), savepointNames1.end(), savepointName1) == savepointNames1.end())
+		{
+			std::cerr << "Savepoint \"" << savepointName1 << "\" not found in Serializer 1." << std::endl;
+			return false;
+		}
+	}
+
+	if (savepointName2 == "")
+	{
+		print = true;
+
+		if (savepointNames2.size() == 1)
+		{
+			savepointName2 = savepointNames2.front();
+		}
+		else
+		{
+			savepointName2 = savepointName1;
+		}
+	}
+
+	if (std::find(savepointNames2.begin(), savepointNames2.end(), savepointName2) == savepointNames2.end())
+	{
+		std::cerr << "Savepoint \"" << savepointName2 << "\" not found in Serializer 2." << std::endl;
+		return false;
+	}
+
+	if (print)
+	{
+		if (savepointName1 == savepointName2)
+		{
+			std::cout << "Savepoint: " << savepointName1 << std::endl;
+		}
+		else
+		{
+			std::cout << "Savepoint 1: " << savepointName1 << std::endl;
+			std::cout << "Savepoint 2: " << savepointName2 << std::endl;
+		}
+	}
+
+	return true;
+}
+
 bool compareInfo(const DataFieldInfo& info1, const DataFieldInfo& info2, std::ostream& out = std::cout)
 {
 	bool equal = true;
@@ -106,111 +212,6 @@ bool compareData(const Serializer& serializer1, const Serializer& serializer2,
 	return equal;
 }
 
-int checkSavepoints(const Serializer& serializer1, const Serializer& serializer2, std::string& savepointName1, std::string& savepointName2)
-{
-	std::vector<std::string> savepointNames1 = savepointNames(serializer1);
-	if (savepointNames1.size() == 0)
-	{
-		std::cerr << "Serializer 1 contains no Savepoints." << std::endl;
-		return 1;
-	}
-
-	std::vector<std::string> savepointNames2 = savepointNames(serializer2);
-	if (savepointNames2.size() == 0)
-	{
-		std::cerr << "Serializer 2 contains no Savepoints." << std::endl;
-		return 1;
-	}
-
-	bool print = false;
-
-	if (savepointName1 == "")
-	{
-		print = true;
-
-		if (savepointNames1.size() == 1)
-		{
-			savepointName1 = savepointNames1.front();
-		}
-		else
-		{
-			std::vector<std::string> commonNames(std::min(savepointNames1.size(), savepointNames2.size()));
-			std::vector<std::string>::iterator it;
-
-			std::sort(savepointNames1.begin(), savepointNames1.end());
-			std::sort(savepointNames2.begin(), savepointNames2.end());
-
-			it = std::set_intersection(savepointNames1.begin(), savepointNames1.end(), savepointNames2.begin(), savepointNames2.end(), commonNames.begin());
-			commonNames.resize(it - commonNames.begin());
-
-			if (commonNames.size() == 1)
-			{
-				savepointName1 = commonNames.front();
-				savepointName2 = commonNames.front();
-			}
-			else if (commonNames.empty())
-			{
-				std::cerr << "No common Savepoints in Serializer 1 and 2." << std::endl;
-				return 2;
-			}
-			else
-			{
-				std::cerr << "Cannot decide on Savepoint; candidates: ";
-				std::string separator = "";
-				for(std::vector<std::string>::iterator it = commonNames.begin(); it != commonNames.end(); ++it) {
-					std::cerr << separator << *it;
-					separator = ", ";
-				}
-				std::cerr << std::endl;
-				return 2;
-			}
-		}
-	}
-	else
-	{
-		if (std::find(savepointNames1.begin(), savepointNames1.end(), savepointName1) == savepointNames1.end())
-		{
-			std::cerr << "Savepoint \"" << savepointName1 << "\" not found in Serializer 1." << std::endl;
-			return 3;
-		}
-	}
-
-	if (savepointName2 == "")
-	{
-		print = true;
-
-		if (savepointNames2.size() == 1)
-		{
-			savepointName2 = savepointNames2.front();
-		}
-		else
-		{
-			savepointName2 = savepointName1;
-		}
-	}
-
-	if (std::find(savepointNames2.begin(), savepointNames2.end(), savepointName2) == savepointNames2.end())
-	{
-		std::cerr << "Savepoint \"" << savepointName2 << "\" not found in Serializer 2." << std::endl;
-		return 4;
-	}
-
-	if (print)
-	{
-		if (savepointName1 == savepointName2)
-		{
-			std::cout << "Savepoint: " << savepointName1 << std::endl;
-		}
-		else
-		{
-			std::cout << "Savepoint 1: " << savepointName1 << std::endl;
-			std::cout << "Savepoint 2: " << savepointName1 << std::endl;
-		}
-	}
-
-	return 0;
-}
-
 int compare(const std::string& directory1, const std::string& basename1, std::string& savepointName1,
 		    const std::string& directory2, const std::string& basename2, std::string& savepointName2,
 			const std::string& field,
@@ -225,7 +226,7 @@ int compare(const std::string& directory1, const std::string& basename1, std::st
 	DataFieldInfo info2;
 	readInfo(directory2, basename2, field, serializer2, info2);
 
-	if (checkSavepoints(serializer1, serializer2, savepointName1, savepointName2) > 0)
+	if (!checkSavepoints(serializer1, serializer2, savepointName1, savepointName2))
 	{
 		return 1;
 	}
@@ -276,7 +277,7 @@ int compareAll(const std::string& directory1, const std::string& basename1, std:
 	Serializer serializer2;
 	serializer2.Init(directory2, basename2, SerializerOpenModeRead);
 
-	if (checkSavepoints(serializer1, serializer2, savepointName1, savepointName2) > 0)
+	if (!checkSavepoints(serializer1, serializer2, savepointName1, savepointName2))
 	{
 		return 1;
 	}
@@ -321,8 +322,6 @@ int main (int argc, char **argv)
     std::string k = ":";
     std::string l = ":";
     double tolerance = 0.0;
-    std::string savepointName1 = "";
-    std::string savepointName2 = "";
     bool infoOnly = false;
     bool quiet = false;
     while ( (opt = getopt(argc, argv, "i:j:k:l:t:oq")) != -1) {
@@ -368,9 +367,11 @@ int main (int argc, char **argv)
 
 	std::string filepath1 = argv[optind++];
 	std::string filepath2 = argv[optind++];
+    std::string savepointName1 = "";
+    std::string savepointName2 = "";
 	if (optind < argc)
 	{
-		std::string savepointName1 = argv[optind++];
+		savepointName1 = argv[optind++];
 
 		if (optind < argc)
 		{

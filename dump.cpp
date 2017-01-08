@@ -8,8 +8,48 @@
 #include <unistd.h>    /* for getopt */
 #include <algorithm>   /* for max, min */
 #include <iostream>    /* for cout */
-#include "Serializer.h"
 #include "shared.h"
+
+
+bool checkSavepoint(const Serializer& serializer, std::string& savepointName)
+{
+	std::vector<std::string> savepntNames = savepointNames(serializer);
+	if (savepntNames.size() == 0)
+	{
+		std::cerr << "Serializer contains no Savepoints." << std::endl;
+		return false;
+	}
+
+	if (savepointName == "")
+	{
+		if (savepntNames.size() == 1)
+		{
+			savepointName = savepntNames.front();
+			std::cout << "Savepoint: " << savepointName << std::endl;
+		}
+		else
+		{
+			std::cerr << "Cannot decide on Savepoint; candidates: ";
+			std::string separator = "";
+			for(std::vector<std::string>::iterator it = savepntNames.begin(); it != savepntNames.end(); ++it) {
+				std::cerr << separator << *it;
+				separator = ", ";
+			}
+			std::cerr << std::endl;
+			return false;
+		}
+	}
+	else
+	{
+		if (std::find(savepntNames.begin(), savepntNames.end(), savepointName) == savepntNames.end())
+		{
+			std::cerr << "Savepoint \"" << savepointName << "\" not found in Serializer." << std::endl;
+			return false;
+		}
+	}
+
+	return true;
+}
 
 void dumpInfo(const DataFieldInfo& info, Bounds iBounds, Bounds jBounds, Bounds kBounds, Bounds lBounds)
 {
@@ -73,7 +113,7 @@ void dumpData(const Serializer& serializer, const DataFieldInfo& info, const std
 }
 
 int dump(const std::string& directory, const std::string& basename,
-	     const std::string& field, const std::string& savepointName,
+	     const std::string& field, std::string& savepointName,
 		 const Bounds& iBounds, const Bounds& jBounds, const Bounds& kBounds, const Bounds& lBounds, bool infoOnly)
 {
 	Serializer serializer;
@@ -88,6 +128,11 @@ int dump(const std::string& directory, const std::string& basename,
 	}
 
 	std::cout << std::endl;
+
+	if (!checkSavepoint(serializer, savepointName))
+	{
+		return 1;
+	}
 
 	if (info.type() == "int")
 	{
@@ -106,6 +151,8 @@ int dump(const std::string& directory, const std::string& basename,
 		std::cerr << "Unsupported type: " << info.type();
 		return 2;
 	}
+
+	return 0;
 }
 
 int main (int argc, char **argv) {
@@ -141,17 +188,21 @@ int main (int argc, char **argv) {
 	Bounds kBounds = string2bounds(k);
 	Bounds lBounds = string2bounds(l);
 
-	if (argc - optind < 2)
+	if (argc - optind < 1)
 	{
 		std::cerr <<
 				"Usage:\n" <<
 				argv[0] << " [-i interval] [-j interval] [-k interval] [-l interval] [-q]" <<
-						   " FILE SAVEPOINT\n";
+						   " FILE [SAVEPOINT]\n";
 		return 3;
 	}
 
 	std::string filepath = argv[optind++];
-	std::string savepointName = argv[optind++];
+    std::string savepointName = "";
+	if (optind < argc)
+	{
+		savepointName = argv[optind++];
+	}
 
     std::string directory;
 	std::string basename;
