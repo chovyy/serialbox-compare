@@ -25,7 +25,6 @@ bool checkSavepoint(const Serializer& serializer, std::string& savepointName)
 		if (savepntNames.size() == 1)
 		{
 			savepointName = savepntNames.front();
-			std::cout << "Savepoint: " << savepointName << std::endl;
 		}
 		else
 		{
@@ -47,6 +46,8 @@ bool checkSavepoint(const Serializer& serializer, std::string& savepointName)
 			return false;
 		}
 	}
+
+	std::cout << "Savepoint: " << savepointName << std::endl;
 
 	return true;
 }
@@ -118,6 +119,7 @@ int dump(const std::string& directory, const std::string& basename,
 {
 	Serializer serializer;
 	DataFieldInfo info;
+
 	readInfo(directory, basename, field, serializer, info);
 
 	dumpInfo(info, iBounds, jBounds, kBounds, lBounds);
@@ -127,12 +129,12 @@ int dump(const std::string& directory, const std::string& basename,
 		return 0;
 	}
 
-	std::cout << std::endl;
-
 	if (!checkSavepoint(serializer, savepointName))
 	{
 		return 1;
 	}
+
+	std::cout << std::endl;
 
 	if (info.type() == "int")
 	{
@@ -215,7 +217,6 @@ int main (int argc, char **argv) {
 
 	std::cout << "Directory: " << directory << std::endl;
 	std::cout << "Basename: " << basename << std::endl;
-	std::cout << "Savepoint: " << savepointName << std::endl;
 
 	return dump(directory, basename, field, savepointName,
 			    iBounds, jBounds, kBounds, lBounds, infoOnly);
