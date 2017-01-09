@@ -187,6 +187,7 @@ bool compareData(const Serializer& serializer1, const Serializer& serializer2,
 
 	bool equal = true;
 
+
 	for (int i = iLower; i <= iUpper; ++i)
 	{
 		for (int j = jLower; j <= jUpper; ++j)
@@ -197,8 +198,9 @@ bool compareData(const Serializer& serializer1, const Serializer& serializer2,
 				{
 					int index = i*jSize*kSize*lSize + j*kSize*lSize + k*lSize + l;
 					if (data1[index] != data2[index] &&
-					    !(data1[index] != data1[index] && data2[index] != data2[index]) && //NaN
-						std::abs(data1[index] - data2[index]) > tolerance)
+						((data1[index] != data1[index] ^ data2[index] != data2[index]) || //Nan
+						  std::abs(data1[index] - data2[index]) > tolerance)
+					)
 					{
 						equal = false;
 						out << "(" << i << ", " << j << ", " << k << ", " << l << ") : ";
