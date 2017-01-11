@@ -203,7 +203,23 @@ bool compareData(const Serializer& serializer1, const Serializer& serializer2,
 					)
 					{
 						equal = false;
-						out << "(" << i << ", " << j << ", " << k << ", " << l << ") : ";
+						if (info.rank() > 0)
+						{
+							out << "(" << i;
+							if (info.rank() > 1)
+							{
+								out << ", " << j;
+							}
+							if (info.rank() > 2)
+							{
+								out << ", " << k;
+							}
+							if (info.rank() > 2)
+							{
+								out << ", " << l;
+							}
+							out << ") : ";
+						}
 						out << data1[index] << " != " << data2[index] << std::endl;
 					}
 				}
