@@ -214,7 +214,7 @@ bool compareData(const Serializer& serializer1, const Serializer& serializer2,
 							{
 								out << ", " << k;
 							}
-							if (info.rank() > 2)
+							if (info.rank() > 3)
 							{
 								out << ", " << l;
 							}
