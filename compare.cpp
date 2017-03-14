@@ -282,7 +282,7 @@ int compare(const std::string& directory1, const std::string& basename1, std::st
 
 int compareAll(const std::string& directory1, const std::string& basename1, std::string& savepointName1,
 		       const std::string& directory2, const std::string& basename2, std::string& savepointName2,
-			   double tolerance, bool infoOnly, bool quiet)
+			   double tolerance, bool infoOnly, bool quiet, bool verbose)
 {
 	Bounds iBounds = string2bounds(":");
 	Bounds jBounds = string2bounds(":");
@@ -315,7 +315,7 @@ int compareAll(const std::string& directory1, const std::string& basename1, std:
 			std::ostringstream buffer;
 			int result = compare(directory1, basename1, savepointName1, directory2, basename2, savepointName2, field1,
 								 iBounds, jBounds, kBounds, lBounds, tolerance, infoOnly, buffer);
-			if (result > 0)
+			if (result > 0 || verbose)
 			{
 				std::cout << "*** Field: " << field1 << " ***" << std::endl;
 				if (! quiet)
@@ -342,7 +342,8 @@ int main (int argc, char **argv)
     double tolerance = 0.0;
     bool infoOnly = false;
     bool quiet = false;
-    while ( (opt = getopt(argc, argv, "i:j:k:l:t:oq")) != -1) {
+    bool verbose = false;
+    while ( (opt = getopt(argc, argv, "i:j:k:l:t:oqv")) != -1) {
         switch (opt)
         {
         case 'i':
@@ -365,6 +366,9 @@ int main (int argc, char **argv)
             break;
         case 'q':
         	quiet = true;
+            break;
+        case 'v':
+        	verbose = true;
             break;
         }
     }
@@ -430,7 +434,7 @@ int main (int argc, char **argv)
 	if (json)
 	{
 		return compareAll(directory1, basename1, savepointName1, directory2, basename2, savepointName2,
-				          tolerance, infoOnly, quiet);
+				          tolerance, infoOnly, quiet, verbose);
 	}
 	else
 	{
