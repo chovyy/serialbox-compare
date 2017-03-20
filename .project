@@ -3,7 +3,7 @@
 	<name>NewSerializerCompare</name>
 	<comment></comment>
 	<projects>
-		<project>github-serialbox</project>
+		<project>github-serialbox-compare</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
