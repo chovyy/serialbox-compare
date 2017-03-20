@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <limits>
 #include <sys/stat.h>
+#include <vector>
 #include "Serializer.h"
 
 using namespace ser;
