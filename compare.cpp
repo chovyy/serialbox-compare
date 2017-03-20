@@ -418,8 +418,8 @@ int main (int argc, char **argv)
 	std::string directory2;
 	std::string basename2;
 	std::string field2 = "";
-	if (   !json && !splitFilePathDat(filepath2, directory2, basename2, field2)
-         || json && !splitFilePathJson(filepath2, directory2, basename2))
+	if (    (!json && !splitFilePathDat(filepath2, directory2, basename2, field2))
+         || (json && !splitFilePathJson(filepath2, directory2, basename2)))
 	{
 		std::cerr << "Invalid file 2: " << filepath2 << std::endl;
 		return 2;
