@@ -38,6 +38,6 @@ Options:
 -q : Only print the name of the field(s) which contain(s) deviations
 ```
 
-## Licence
+## License
 
 [GNU General Public License v3.0](LICENSE)
