@@ -37,3 +37,7 @@ Options:
 -o : Compare only field meta data
 -q : Only print the name of the field(s) which contain(s) deviations
 ```
+
+## Licence
+
+[GNU General Public License v3.0](LICENSE)
