@@ -332,6 +332,24 @@ int compareAll(const std::string& directory1, const std::string& basename1, std:
 	return total;
 }
 
+void printHelp(std::ostream& out, const std::string& mainCommand)
+{
+	out << "Usage:" << std::endl <<
+	mainCommand << "[-h] [-i INTERVAL] [-j INTERVAL] [-k INTERVAL] [-l INTERVAL] [-t TOLERANCE] [-o] [-q] FILE1 FILE2 [SAVEPOINT1 [SAVEPOINT2]]" << std::endl <<
+	std::endl <<
+	"Compares SerialBox fields in FILE1 and FILE2 at SAVEPOINT1 and SAVEPOINT2." << std::endl <<
+	"FILE1 and FILE2 can be .dat or .json files, but need to be of the same type." << std::endl <<
+	"When they are .json files, all field are compared. When they are .dat files, the field name has to be the last part of the file name, separated by _." << std::endl <<
+	"If no savepoint is given, the right savepoint is guessed. If only SAVEPOINT1 is given, it has to exist in both files." << std::endl <<
+	std::endl <<
+	"Options: " << std::endl <<
+	"-h : Print this help" << std::endl <<
+	"-i/j/k/l INTERVAL : Limit the comparison to the given interval in the i/j/k/l dimension. The INTERVAL is given by START:END, START:, or :END, e.g. -i 23:42" << std::endl <<
+	"-t TOLERANCE : Tolerance for the comparison, e.g. -t 0.0001" << std::endl <<
+	"-o : Compare only field meta data" << std::endl <<
+	"-q : Only print the name of the field(s) which contain(s) deviations" << std::endl;
+}
+
 int main (int argc, char **argv)
 {
 	int opt;
@@ -343,7 +361,7 @@ int main (int argc, char **argv)
     bool infoOnly = false;
     bool quiet = false;
     bool verbose = false;
-    while ( (opt = getopt(argc, argv, "i:j:k:l:t:oqv")) != -1) {
+    while ( (opt = getopt(argc, argv, "i:j:k:l:t:oqvh")) != -1) {
         switch (opt)
         {
         case 'i':
@@ -370,6 +388,9 @@ int main (int argc, char **argv)
         case 'v':
         	verbose = true;
             break;
+        case 'h':
+        	printHelp(std::cout, argv[0]);
+            return 0;
         }
     }
 
@@ -380,10 +401,7 @@ int main (int argc, char **argv)
 
 	if (argc - optind < 2)
 	{
-		std::cerr <<
-				"Usage:" << std::endl <<
-				argv[0] << " [-i interval] [-j interval] [-k interval] [-l interval] [-t tolerance] [-o] [-q]" <<
-						   " FILE1 FILE2 [SAVEPOINT1 [SAVEPOINT2]]" << std::endl;
+		printHelp(std::cerr, argv[0]);
 		return 3;
 	}
 

@@ -157,6 +157,22 @@ int dump(const std::string& directory, const std::string& basename,
 	return 0;
 }
 
+void printHelp(std::ostream& out, const std::string& mainCommand)
+{
+	out << "Usage:" << std::endl <<
+	mainCommand << "[-h] [-i interval] [-j interval] [-k interval] [-l interval] [-o] [-q] FILE [SAVEPOINT]\n" << std::endl <<
+	std::endl <<
+	"Dumps SerialBox field in FILE at SAVEPOINT." << std::endl <<
+	"FILE has to be a .dat file and the field name has to be the last part of the file name, separated by _." << std::endl <<
+	"If no savepoint is given, the right savepoint is guessed." << std::endl <<
+	std::endl <<
+	"Options: " << std::endl <<
+	"-h : Print this help" << std::endl <<
+	"-i/j/k/l INTERVAL : Limit the output to the given interval in the i/j/k/l dimension. The INTERVAL is given by START:END, START:, or :END, e.g. -i 23:42" << std::endl <<
+	"-o : Dump only field meta data" << std::endl <<
+	"-q : Alias for -o" << std::endl;
+}
+
 int main (int argc, char **argv) {
     int opt;
     std::string i = ":";
@@ -164,7 +180,7 @@ int main (int argc, char **argv) {
     std::string k = ":";
     std::string l = ":";
     bool infoOnly = false;
-    while ( (opt = getopt(argc, argv, "i:j:k:l:q")) != -1) {
+    while ( (opt = getopt(argc, argv, "i:j:k:l:oqh")) != -1) {
         switch (opt)
         {
         case 'i':
@@ -179,9 +195,15 @@ int main (int argc, char **argv) {
         case 'l':
 			l = optarg;
             break;
+        case 'o':
+			infoOnly = true;
+			break;
         case 'q':
 			infoOnly = true;
             break;
+        case 'h':
+			printHelp(std::cout, argv[0]);
+            return 0;
         }
     }
 
@@ -192,10 +214,7 @@ int main (int argc, char **argv) {
 
 	if (argc - optind < 1)
 	{
-		std::cerr <<
-				"Usage:\n" <<
-				argv[0] << " [-i interval] [-j interval] [-k interval] [-l interval] [-q]" <<
-						   " FILE [SAVEPOINT]\n";
+		printHelp(std::cerr, argv[0]);
 		return 3;
 	}
 
@@ -218,6 +237,5 @@ int main (int argc, char **argv) {
 	std::cout << "Directory: " << directory << std::endl;
 	std::cout << "Basename: " << basename << std::endl;
 
-	return dump(directory, basename, field, savepointName,
-			    iBounds, jBounds, kBounds, lBounds, infoOnly);
+	return dump(directory, basename, field, savepointName, iBounds, jBounds, kBounds, lBounds, infoOnly);
 }
