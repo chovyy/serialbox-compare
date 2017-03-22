@@ -335,7 +335,7 @@ int compareAll(const std::string& directory1, const std::string& basename1, std:
 void printHelp(std::ostream& out, const std::string& mainCommand)
 {
 	out << "Usage:" << std::endl <<
-	mainCommand << "[-h] [-i INTERVAL] [-j INTERVAL] [-k INTERVAL] [-l INTERVAL] [-t TOLERANCE] [-o] [-q] FILE1 FILE2 [SAVEPOINT1 [SAVEPOINT2]]" << std::endl <<
+	mainCommand << " [-h] [-i INTERVAL] [-j INTERVAL] [-k INTERVAL] [-l INTERVAL] [-t TOLERANCE] [-o] [-q] FILE1 FILE2 [SAVEPOINT1 [SAVEPOINT2]]" << std::endl <<
 	std::endl <<
 	"Compares SerialBox fields in FILE1 and FILE2 at SAVEPOINT1 and SAVEPOINT2." << std::endl <<
 	"FILE1 and FILE2 can be .dat or .json files, but need to be of the same type." << std::endl <<
