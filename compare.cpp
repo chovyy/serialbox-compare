@@ -317,7 +317,16 @@ int compareAll(const std::string& directory1, const std::string& basename1, std:
 								 iBounds, jBounds, kBounds, lBounds, tolerance, infoOnly, buffer);
 			if (result > 0 || verbose)
 			{
-				std::cout << "*** Field: " << field1 << " ***" << std::endl;
+				if (result > 0)
+				{
+					std::cout << "NOT IDENTICAL: ";
+				}
+				else
+				{
+					std::cout << "*** ";
+				}
+				std::cout << field1;
+				std::cout << " ***" << std::endl;
 				if (! quiet)
 				{
 					std::cout << buffer.str();
@@ -327,6 +336,15 @@ int compareAll(const std::string& directory1, const std::string& basename1, std:
 			total = std::max(total, result);
 		}
 
+	}
+	if (verbose)
+	{
+		std::cout << "---------------------------------" << std::endl;
+		if (total > 0)
+		{
+			std::cout << "NOT ";
+		}
+		std::cout << "IDENTICAL!" << std::endl;
 	}
 
 	return total;
@@ -347,7 +365,8 @@ void printHelp(std::ostream& out, const std::string& mainCommand)
 	"-i/j/k/l INTERVAL : Limit the comparison to the given interval in the i/j/k/l dimension. The INTERVAL is given by START:END, START:, or :END, e.g. -i 23:42" << std::endl <<
 	"-t TOLERANCE : Tolerance for the comparison, e.g. -t 0.0001" << std::endl <<
 	"-o : Compare only field meta data" << std::endl <<
-	"-q : Only print the name of the field(s) which contain(s) deviations" << std::endl;
+	"-q : Only print the name of the field(s) which contain(s) deviations without printing all deviating elements" << std::endl <<
+	"-v : Prints the name of every compared field, even if it's identical" << std::endl;
 }
 
 int main (int argc, char **argv)
