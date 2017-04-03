@@ -9,7 +9,8 @@
 #include <algorithm>   /* for max, min */
 #include <cmath>       /* for abs */
 #include <iostream>    /* for cout */
-#include "shared.h"
+
+#include "sbshared.h"
 
 
 bool checkSavepoints(const Serializer& serializer1, const Serializer& serializer2, std::string& savepointName1, std::string& savepointName2)

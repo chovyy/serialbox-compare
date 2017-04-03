@@ -7,13 +7,13 @@ INCLUDE = -I$(SBDIR)/include/STELLA/libjson -I$(SBDIR)/include/SerialBox
 LIBS = -L$(SBDIR)/lib -lSerialBox -lUtils -ljson -lsha256
 
 
-all: compare dump
+all: sbcompare sbdump
 
-%: %.cpp shared.h
+%: %.cpp sbshared.h
 	$(CPP) $(CPPFLAGS) $(INCLUDE) -o $@ $< $(LIBS)
 
 clean:
-	rm -f compare dump	
+	rm -f sbcompare sbdump	
  
  
  

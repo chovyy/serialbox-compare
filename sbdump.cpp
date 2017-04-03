@@ -8,7 +8,8 @@
 #include <unistd.h>    /* for getopt */
 #include <algorithm>   /* for max, min */
 #include <iostream>    /* for cout */
-#include "shared.h"
+
+#include "sbshared.h"
 
 
 bool checkSavepoint(const Serializer& serializer, std::string& savepointName)

@@ -1,6 +1,6 @@
 /.settings
-dump
-compare
+sbdump
+sbcompare
 a.out
 *.pyc
 Compare
