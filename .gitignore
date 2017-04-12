@@ -5,3 +5,4 @@ a.out
 *.pyc
 Compare
 Dump
+/Debug/
