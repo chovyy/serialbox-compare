@@ -163,7 +163,7 @@ void printHelp(std::ostream& out, const std::string& mainCommand)
 	out << "Usage:" << std::endl <<
 	mainCommand << " [-h] [-i interval] [-j interval] [-k interval] [-l interval] [-o] [-q] FILE [SAVEPOINT]\n" << std::endl <<
 	std::endl <<
-	"Dumps SerialBox field in FILE at SAVEPOINT." << std::endl <<
+	"Dumps Serialbox field in FILE at SAVEPOINT." << std::endl <<
 	"FILE has to be a .dat file and the field name has to be the last part of the file name, separated by _." << std::endl <<
 	"If no savepoint is given, the right savepoint is guessed." << std::endl <<
 	std::endl <<

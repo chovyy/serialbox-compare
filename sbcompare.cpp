@@ -356,7 +356,7 @@ void printHelp(std::ostream& out, const std::string& mainCommand)
 	out << "Usage:" << std::endl <<
 	mainCommand << " [-h] [-i INTERVAL] [-j INTERVAL] [-k INTERVAL] [-l INTERVAL] [-t TOLERANCE] [-o] [-q] FILE1 FILE2 [SAVEPOINT1 [SAVEPOINT2]]" << std::endl <<
 	std::endl <<
-	"Compares SerialBox fields in FILE1 and FILE2 at SAVEPOINT1 and SAVEPOINT2." << std::endl <<
+	"Compares Serialbox fields in FILE1 and FILE2 at SAVEPOINT1 and SAVEPOINT2." << std::endl <<
 	"FILE1 and FILE2 can be .dat or .json files, but need to be of the same type." << std::endl <<
 	"When they are .json files, all field are compared. When they are .dat files, the field name has to be the last part of the file name, separated by _." << std::endl <<
 	"If no savepoint is given, the right savepoint is guessed. If only SAVEPOINT1 is given, it has to exist in both files." << std::endl <<
