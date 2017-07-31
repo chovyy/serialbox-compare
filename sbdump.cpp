@@ -141,6 +141,10 @@ int dump(const std::string& directory, const std::string& basename,
 	{
 		dumpData<int>(serializer, info, savepointName, iBounds, jBounds, kBounds, lBounds);
 	}
+	else if (info.type() == "long")
+	{
+		dumpData<int>(serializer, info, savepointName, iBounds, jBounds, kBounds, lBounds);
+	}
 	else if (info.type() == "double")
 	{
 		dumpData<double>(serializer, info, savepointName, iBounds, jBounds, kBounds, lBounds);

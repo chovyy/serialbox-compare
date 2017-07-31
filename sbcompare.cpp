@@ -264,6 +264,10 @@ int compare(const std::string& directory1, const std::string& basename1, std::st
 	{
 		equal = compareData<int>(serializer1, serializer2, savepointName1, savepointName2, info1, iBounds, jBounds, kBounds, lBounds, tolerance, out);
 	}
+	else if (info1.type() == "long")
+	{
+		equal = compareData<long>(serializer1, serializer2, savepointName1, savepointName2, info1, iBounds, jBounds, kBounds, lBounds, tolerance, out);
+	}
 	else if (info1.type() == "double")
 	{
 		equal = compareData<double>(serializer1, serializer2, savepointName1, savepointName2, info1, iBounds, jBounds, kBounds, lBounds, tolerance, out);
